@@ -1,0 +1,16 @@
+Machine Learning Engineer (Graduate Programme)
+
+NeuralByte (fictional) is hiring freshers and recent graduates for its machine learning team.
+
+What you will do
+- Train and evaluate deep learning models in PyTorch
+- Build NLP features using Hugging Face and Sentence Transformers
+- Package models as FastAPI services
+
+What we are looking for
+- Strong Python, machine learning and data structures fundamentals
+- Projects or internships involving PyTorch or TensorFlow
+- B.Tech / M.Tech in Computer Science, AI or a related field
+
+Nice to have
+- Docker, Git and basic cloud (AWS or GCP) knowledge

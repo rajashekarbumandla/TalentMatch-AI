@@ -1,0 +1,168 @@
+{
+  "_comment": "Technical skills dictionary. Format: category -> canonical skill name -> {aliases, case_sensitive}. 'aliases' lists every spelling to detect (include the canonical name itself if it should match). Aliases listed in 'case_sensitive' must match exact letter case; use this for short or ambiguous words such as C, ML, REST or React. Optional 'implies' lists skills a framework implies (Django -> Python); it is used ONLY to judge whether a past job is relevant, never to award skill matches. Edit freely; restart the API to reload.",
+
+  "Programming Languages": {
+    "Python": {"aliases": ["Python", "Python3", "Python 3"]},
+    "Java": {"aliases": ["Java", "Core Java", "Java SE", "Java EE", "J2EE"]},
+    "C": {"aliases": ["C", "C Programming", "C Language"], "case_sensitive": ["C"]},
+    "C++": {"aliases": ["C++", "CPP"]},
+    "C#": {"aliases": ["C#", "C Sharp", "CSharp"]},
+    "JavaScript": {"aliases": ["JavaScript", "Java Script", "JS", "ES6", "ECMAScript"], "case_sensitive": ["JS"]},
+    "TypeScript": {"aliases": ["TypeScript", "Type Script"]},
+    "Go": {"aliases": ["Golang"]},
+    "Kotlin": {"aliases": ["Kotlin"]},
+    "Swift": {"aliases": ["Swift"], "case_sensitive": ["Swift"]},
+    "PHP": {"aliases": ["PHP"]},
+    "Ruby": {"aliases": ["Ruby"], "case_sensitive": ["Ruby"]},
+    "Rust": {"aliases": ["Rust"], "case_sensitive": ["Rust"]},
+    "Scala": {"aliases": ["Scala"]},
+    "Dart": {"aliases": ["Dart"], "case_sensitive": ["Dart"]},
+    "MATLAB": {"aliases": ["MATLAB"]},
+    "Bash": {"aliases": ["Bash", "Shell Scripting", "Shell Script", "Shell Scripts"]}
+  },
+
+  "Backend": {
+    "FastAPI": {"aliases": ["FastAPI", "Fast API"], "implies": ["Python"]},
+    "Flask": {"aliases": ["Flask"], "implies": ["Python"]},
+    "Django": {"aliases": ["Django", "Django REST Framework", "DRF"], "case_sensitive": ["DRF"], "implies": ["Python"]},
+    "Node.js": {"aliases": ["Node.js", "NodeJS", "Node JS"], "implies": ["JavaScript"]},
+    "Express.js": {"aliases": ["Express.js", "ExpressJS", "Express JS"], "implies": ["JavaScript", "Node.js"]},
+    "Spring Boot": {"aliases": ["Spring Boot", "SpringBoot"], "implies": ["Java"]},
+    "Spring": {"aliases": ["Spring Framework", "Spring MVC"], "implies": ["Java"]},
+    "Hibernate": {"aliases": ["Hibernate", "JPA"], "implies": ["Java"]},
+    ".NET": {"aliases": [".NET", ".NET Core", "ASP.NET", "ASP.NET Core", "dotnet"], "implies": ["C#"]},
+    "Laravel": {"aliases": ["Laravel"]},
+    "SQLAlchemy": {"aliases": ["SQLAlchemy"], "implies": ["Python", "SQL"]},
+    "Celery": {"aliases": ["Celery"], "implies": ["Python"]},
+    "GraphQL": {"aliases": ["GraphQL"]},
+    "Microservices": {"aliases": ["Microservices", "Micro-services", "Microservice", "Microservice Architecture"]},
+    "REST APIs": {
+      "aliases": ["REST API", "REST APIs", "RESTful API", "RESTful APIs", "RESTful services", "RESTful web services", "REST services", "RESTful", "REST"],
+      "case_sensitive": ["REST"]
+    }
+  },
+
+  "Frontend": {
+    "React": {"aliases": ["React", "React.js", "ReactJS", "React JS"], "case_sensitive": ["React"], "implies": ["JavaScript"]},
+    "Angular": {"aliases": ["Angular", "AngularJS", "Angular.js"], "implies": ["JavaScript", "TypeScript"]},
+    "Vue.js": {"aliases": ["Vue.js", "VueJS", "Vue"], "case_sensitive": ["Vue"], "implies": ["JavaScript"]},
+    "Next.js": {"aliases": ["Next.js", "NextJS"], "implies": ["JavaScript", "React"]},
+    "HTML": {"aliases": ["HTML", "HTML5"]},
+    "CSS": {"aliases": ["CSS", "CSS3"]},
+    "Tailwind CSS": {"aliases": ["Tailwind CSS", "TailwindCSS", "Tailwind"]},
+    "Bootstrap": {"aliases": ["Bootstrap"], "case_sensitive": ["Bootstrap"]},
+    "Redux": {"aliases": ["Redux"], "implies": ["JavaScript"]},
+    "jQuery": {"aliases": ["jQuery"]},
+    "Material UI": {"aliases": ["Material UI", "Material-UI"]}
+  },
+
+  "Mobile": {
+    "React Native": {"aliases": ["React Native"], "implies": ["JavaScript"]},
+    "Flutter": {"aliases": ["Flutter"]},
+    "Android": {"aliases": ["Android"]}
+  },
+
+  "Databases": {
+    "SQL": {"aliases": ["SQL"]},
+    "MySQL": {"aliases": ["MySQL"], "implies": ["SQL"]},
+    "PostgreSQL": {"aliases": ["PostgreSQL", "Postgres", "Postgre SQL"], "implies": ["SQL"]},
+    "SQLite": {"aliases": ["SQLite"]},
+    "Microsoft SQL Server": {"aliases": ["SQL Server", "MS SQL", "MSSQL", "T-SQL"], "implies": ["SQL"]},
+    "Oracle Database": {"aliases": ["Oracle Database", "Oracle DB", "PL/SQL"]},
+    "MongoDB": {"aliases": ["MongoDB", "Mongo DB", "Mongo"]},
+    "NoSQL": {"aliases": ["NoSQL"]},
+    "Redis": {"aliases": ["Redis"]},
+    "Cassandra": {"aliases": ["Cassandra"]},
+    "DynamoDB": {"aliases": ["DynamoDB"]},
+    "Elasticsearch": {"aliases": ["Elasticsearch", "Elastic Search"]},
+    "Firebase": {"aliases": ["Firebase"]},
+    "Supabase": {"aliases": ["Supabase"]}
+  },
+
+  "AI / Machine Learning": {
+    "Machine Learning": {"aliases": ["Machine Learning", "ML"], "case_sensitive": ["ML"]},
+    "Deep Learning": {"aliases": ["Deep Learning"]},
+    "NLP": {"aliases": ["NLP", "Natural Language Processing"]},
+    "Computer Vision": {"aliases": ["Computer Vision"]},
+    "Artificial Intelligence": {"aliases": ["Artificial Intelligence"]},
+    "Generative AI": {"aliases": ["Generative AI", "GenAI", "Gen AI"]},
+    "LLMs": {"aliases": ["LLM", "LLMs", "Large Language Models", "Large Language Model"]},
+    "Scikit-learn": {"aliases": ["Scikit-learn", "Scikit learn", "sklearn", "SciKit-Learn"], "implies": ["Python", "Machine Learning"]},
+    "TensorFlow": {"aliases": ["TensorFlow", "Tensor Flow"], "implies": ["Machine Learning", "Deep Learning"]},
+    "PyTorch": {"aliases": ["PyTorch"], "implies": ["Python", "Machine Learning", "Deep Learning"]},
+    "Keras": {"aliases": ["Keras"]},
+    "Sentence Transformers": {"aliases": ["Sentence Transformers", "Sentence-Transformers", "SentenceTransformers", "SBERT"]},
+    "Hugging Face": {"aliases": ["Hugging Face", "HuggingFace"]},
+    "LangChain": {"aliases": ["LangChain"]},
+    "spaCy": {"aliases": ["spaCy"]},
+    "NLTK": {"aliases": ["NLTK"]},
+    "OpenCV": {"aliases": ["OpenCV"]},
+    "XGBoost": {"aliases": ["XGBoost"]},
+    "MLOps": {"aliases": ["MLOps"]},
+    "MLflow": {"aliases": ["MLflow"]}
+  },
+
+  "Data": {
+    "Pandas": {"aliases": ["Pandas"], "implies": ["Python"]},
+    "NumPy": {"aliases": ["NumPy"], "implies": ["Python"]},
+    "Matplotlib": {"aliases": ["Matplotlib"]},
+    "Seaborn": {"aliases": ["Seaborn"]},
+    "Data Analysis": {"aliases": ["Data Analysis", "Data Analytics"]},
+    "Data Visualization": {"aliases": ["Data Visualization", "Data Visualisation"]},
+    "Statistics": {"aliases": ["Statistics", "Statistical Analysis"]},
+    "Power BI": {"aliases": ["Power BI", "PowerBI"]},
+    "Tableau": {"aliases": ["Tableau"]},
+    "Excel": {"aliases": ["Excel", "MS Excel", "Microsoft Excel", "Advanced Excel"], "case_sensitive": ["Excel"]},
+    "Apache Spark": {"aliases": ["Apache Spark", "Spark", "PySpark"], "case_sensitive": ["Spark"]},
+    "Hadoop": {"aliases": ["Hadoop"]},
+    "ETL": {"aliases": ["ETL"]}
+  },
+
+  "Cloud & DevOps": {
+    "Docker": {"aliases": ["Docker"]},
+    "Kubernetes": {"aliases": ["Kubernetes", "K8s"]},
+    "AWS": {"aliases": ["AWS", "Amazon Web Services"]},
+    "Azure": {"aliases": ["Azure", "Microsoft Azure"]},
+    "GCP": {"aliases": ["GCP", "Google Cloud", "Google Cloud Platform"]},
+    "Linux": {"aliases": ["Linux", "Ubuntu"]},
+    "CI/CD": {"aliases": ["CI/CD", "CI CD", "Continuous Integration"]},
+    "Jenkins": {"aliases": ["Jenkins"]},
+    "GitHub Actions": {"aliases": ["GitHub Actions"]},
+    "Terraform": {"aliases": ["Terraform"]},
+    "Nginx": {"aliases": ["Nginx"]},
+    "Git": {"aliases": ["Git"]},
+    "GitHub": {"aliases": ["GitHub"]},
+    "GitLab": {"aliases": ["GitLab"]}
+  },
+
+  "Testing": {
+    "Pytest": {"aliases": ["Pytest", "PyTest"], "implies": ["Python"]},
+    "JUnit": {"aliases": ["JUnit"], "implies": ["Java"]},
+    "Selenium": {"aliases": ["Selenium"]},
+    "Postman": {"aliases": ["Postman"]},
+    "Unit Testing": {"aliases": ["Unit Testing", "Unit Tests"]}
+  },
+
+  "Computer Science Fundamentals": {
+    "Data Structures": {"aliases": ["Data Structures", "Data Structures and Algorithms", "DSA"], "case_sensitive": ["DSA"]},
+    "Algorithms": {"aliases": ["Algorithms"], "case_sensitive": ["Algorithms"]},
+    "OOP": {"aliases": ["OOP", "OOPs", "Object-Oriented Programming", "Object Oriented Programming"]},
+    "System Design": {"aliases": ["System Design"]}
+  },
+
+  "Methodologies & Tools": {
+    "Agile": {"aliases": ["Agile", "Scrum"]},
+    "Jira": {"aliases": ["Jira"]}
+  },
+
+  "Embedded & Engineering": {
+    "Embedded C": {"aliases": ["Embedded C"], "implies": ["C"]},
+    "Embedded Systems": {"aliases": ["Embedded Systems", "Embedded System"]},
+    "RTOS": {"aliases": ["RTOS", "FreeRTOS"]},
+    "Arduino": {"aliases": ["Arduino"]},
+    "Raspberry Pi": {"aliases": ["Raspberry Pi"]},
+    "Verilog": {"aliases": ["Verilog"]},
+    "AutoCAD": {"aliases": ["AutoCAD"]},
+    "PLC": {"aliases": ["PLC"]}
+  }
+}

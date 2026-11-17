@@ -1,0 +1,18 @@
+Position: Java Developer
+
+Role Overview
+Orbit Systems (fictional) is looking for an experienced Java developer to build order-management microservices.
+
+Key Responsibilities
+- Develop and maintain Spring Boot microservices backed by MySQL
+- Write unit tests with JUnit and maintain Jenkins CI pipelines
+- Participate in code reviews and agile ceremonies
+
+Requirements
+- Minimum of four (4) years of experience in Java development
+- Strong knowledge of Spring Boot, Hibernate, MySQL and REST APIs
+- B.E. / B.Tech in Computer Science or Information Technology
+
+Preferred Skills
+- Docker and Kubernetes
+- Exposure to AWS

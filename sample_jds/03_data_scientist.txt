@@ -1,0 +1,20 @@
+Job Title: Data Scientist
+
+Overview
+InsightCart (a fictional retail analytics company) is hiring a data scientist to build customer-churn and demand-forecasting models.
+
+Responsibilities
+- Build, validate and deploy machine learning models using Python and scikit-learn
+- Analyse large datasets with SQL and Pandas and communicate insights to business teams
+- Develop NLP pipelines to classify customer reviews
+- Present results with clear data visualisation
+
+Qualifications
+- 2-4 years of experience in data science or machine learning roles
+- Strong Python, SQL, statistics and Pandas skills
+- Experience with TensorFlow or PyTorch for deep learning
+- Bachelor's degree in Statistics, Computer Science or a related field; a Master's degree is preferred
+
+Good to Have
+- Familiarity with Tableau or Power BI
+- Experience deploying models with Docker; knowledge of Spark is a plus

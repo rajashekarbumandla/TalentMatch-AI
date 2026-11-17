@@ -1,0 +1,122 @@
+[
+ {
+  "rank": 1,
+  "name": "Priya Nair",
+  "final": 82.66,
+  "semantic": 85.81,
+  "skills": 66.67,
+  "experience": 100,
+  "relevant": 4.3,
+  "total": 4.3
+ },
+ {
+  "rank": 2,
+  "name": "Arjun Mehta",
+  "final": 81.95,
+  "semantic": 69.46,
+  "skills": 83.33,
+  "experience": 100,
+  "relevant": 8.5,
+  "total": 8.5
+ },
+ {
+  "rank": 3,
+  "name": "Neha Patil",
+  "final": 66.76,
+  "semantic": 75.24,
+  "skills": 33.33,
+  "experience": 100,
+  "relevant": 4,
+  "total": 4
+ },
+ {
+  "rank": 4,
+  "name": "Vikram Singh",
+  "final": 64.16,
+  "semantic": 54.15,
+  "skills": 50,
+  "experience": 100,
+  "relevant": 5.8,
+  "total": 5.8
+ },
+ {
+  "rank": 5,
+  "name": "Rohan Gupta",
+  "final": 61.86,
+  "semantic": 96.31,
+  "skills": 66.67,
+  "experience": 0,
+  "relevant": 0,
+  "total": 0
+ },
+ {
+  "rank": 6,
+  "name": "Aditya Rao",
+  "final": 60.63,
+  "semantic": 30.74,
+  "skills": 66.67,
+  "experience": 100,
+  "relevant": 6.9,
+  "total": 6.9
+ },
+ {
+  "rank": 7,
+  "name": "Sneha Kulkarni",
+  "final": 57.73,
+  "semantic": 38.06,
+  "skills": 50,
+  "experience": 100,
+  "relevant": 6.4,
+  "total": 6.4
+ },
+ {
+  "rank": 8,
+  "name": "Meera Joshi",
+  "final": 50.12,
+  "semantic": 33.64,
+  "skills": 33.33,
+  "experience": 100,
+  "relevant": 5.8,
+  "total": 7.8
+ },
+ {
+  "rank": 9,
+  "name": "Sanjay Verma",
+  "final": 45.35,
+  "semantic": 21.7,
+  "skills": 33.33,
+  "experience": 100,
+  "relevant": 3.9,
+  "total": 3.9
+ },
+ {
+  "rank": 10,
+  "name": "Ananya Reddy",
+  "final": 6.2,
+  "semantic": 15.51,
+  "skills": 0,
+  "experience": 0,
+  "relevant": 0,
+  "total": 3.2
+ },
+ {
+  "rank": 11,
+  "name": "Karthik Iyer",
+  "final": 4.43,
+  "semantic": 11.08,
+  "skills": 0,
+  "experience": 0,
+  "relevant": 0,
+  "total": 5.9
+ },
+ {
+  "rank": 12,
+  "name": "Fatima Sheikh",
+  "final": 0,
+  "semantic": 0,
+  "skills": 0,
+  "experience": 0,
+  "relevant": 0,
+  "total": 6.2
+ }
+]

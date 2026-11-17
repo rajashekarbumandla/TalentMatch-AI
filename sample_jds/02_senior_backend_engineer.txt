@@ -1,0 +1,25 @@
+Senior Backend Engineer
+
+About Us
+Finova Labs is a fictional fintech start-up processing payments for 3,000 merchants. We have been in business for 12 years and run everything on AWS.
+
+What You'll Do
+- Design, build and maintain high-throughput REST APIs in Python using FastAPI
+- Own PostgreSQL schema design, query optimisation and data migrations
+- Containerise services with Docker and deploy them through CI/CD pipelines
+- Mentor junior engineers and review pull requests
+- Collaborate with product managers to translate payment requirements into technical designs
+
+Requirements
+- 5+ years of professional software development experience, including at least 2 years with Python
+- Strong knowledge of FastAPI or Django, PostgreSQL and REST API design
+- Hands-on experience with Docker and Git
+- Bachelor's degree in Computer Science, Engineering or a related field
+
+Nice to Have
+- Experience with Kubernetes and Redis
+- Exposure to microservices and event-driven architecture
+- AWS certification is a plus
+
+Benefits
+- Hybrid work, health insurance and a learning budget
