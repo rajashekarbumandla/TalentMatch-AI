@@ -1,11 +1,12 @@
 # Not needed on the server: keeps the function bundle small.
-.venv/
-tests/
-scripts/
-data/
-.pytest_cache/
+# Folder patterns start with "/" so they only match at the backend root.
+# (A bare "data/" would also drop app/nlp/data/skills.json, which the app needs.)
+/.venv/
+/tests/
+/scripts/
+/.pytest_cache/
 __pycache__/
 *.pyc
 .env
-requirements-dev.txt
-pytest.ini
+/requirements-dev.txt
+/pytest.ini
