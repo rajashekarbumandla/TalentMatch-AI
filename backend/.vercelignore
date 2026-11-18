@@ -1,0 +1,11 @@
+# Not needed on the server: keeps the function bundle small.
+.venv/
+tests/
+scripts/
+data/
+.pytest_cache/
+__pycache__/
+*.pyc
+.env
+requirements-dev.txt
+pytest.ini

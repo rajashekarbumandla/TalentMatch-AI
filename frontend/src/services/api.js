@@ -108,19 +108,58 @@ export const jobsApi = {
   remove: (jobId) => api.delete(`/jobs/${jobId}`),
 }
 
+// Hosting platforms limit the size of one request (Vercel: 4.5 MB), so a batch of resumes is
+// sent in groups of at most this many bytes. The recruiter still selects all files at once.
+const MAX_UPLOAD_GROUP_BYTES = 3.5 * 1024 * 1024
+const MAX_UPLOAD_GROUP_FILES = 10
+
+export function groupFilesForUpload(files) {
+  const groups = []
+  let current = []
+  let size = 0
+  for (const file of files) {
+    const tooBig = size + file.size > MAX_UPLOAD_GROUP_BYTES || current.length >= MAX_UPLOAD_GROUP_FILES
+    if (current.length && tooBig) {
+      groups.push(current)
+      current = []
+      size = 0
+    }
+    current.push(file)
+    size += file.size
+  }
+  if (current.length) groups.push(current)
+  return groups
+}
+
 export const resumesApi = {
-  /** onProgress receives 0-100 while the files are being sent (real upload progress). */
-  upload: (files, onProgress) => {
-    const form = new FormData()
-    files.forEach((file) => form.append('files', file))
-    return api
-      .post('/resumes/upload', form, {
-        timeout: LONG_TIMEOUT,
-        onUploadProgress: (event) => {
-          if (onProgress && event.total) onProgress(Math.round((event.loaded / event.total) * 100))
-        },
-      })
-      .then(data)
+  /**
+   * Upload resumes in groups (see MAX_UPLOAD_GROUP_BYTES) and combine the results.
+   * onProgress receives 0-100 across ALL files while they are being sent (real upload progress).
+   */
+  upload: async (files, onProgress) => {
+    const totalBytes = files.reduce((sum, file) => sum + file.size, 0) || 1
+    let sentBytes = 0
+    const combined = { total_files: 0, parsed: 0, duplicates: 0, failed: 0, candidate_ids: [], files: [] }
+    for (const group of groupFilesForUpload(files)) {
+      const form = new FormData()
+      group.forEach((file) => form.append('files', file))
+      const groupBytes = group.reduce((sum, file) => sum + file.size, 0)
+      const result = await api
+        .post('/resumes/upload', form, {
+          timeout: LONG_TIMEOUT,
+          onUploadProgress: (event) => {
+            if (onProgress && event.total) {
+              onProgress(Math.min(100, Math.round(((sentBytes + (event.loaded / event.total) * groupBytes) / totalBytes) * 100)))
+            }
+          },
+        })
+        .then(data)
+      sentBytes += groupBytes
+      for (const key of ['total_files', 'parsed', 'duplicates', 'failed']) combined[key] += result[key]
+      combined.candidate_ids.push(...result.candidate_ids)
+      combined.files.push(...result.files)
+    }
+    return combined
   },
 }
 

@@ -35,8 +35,8 @@ def test_cosine_calibration(cosine, expected):
 
 # --- Real model -----------------------------------------------------------------------------------------------
 def test_model_is_loaded_once_and_reused(matcher):
-    model = matcher._model
-    assert matcher.load() and matcher._model is model  # second load() does not reload
+    session = matcher._session
+    assert matcher.load() and matcher._session is session  # second load() does not reload
     assert matcher.embed_documents(["hello world"])[0].shape == (384,)
 
 
@@ -81,17 +81,27 @@ def test_long_resume_is_not_truncated(matcher):
 
 
 def test_model_load_failure_is_reported_not_raised(monkeypatch):
-    import sentence_transformers
+    import onnxruntime
 
     def broken(*args, **kwargs):
         raise OSError("model files not found")
 
-    monkeypatch.setattr(sentence_transformers, "SentenceTransformer", broken)
-    broken_matcher = SemanticMatcher("some-missing-model")
+    monkeypatch.setattr(onnxruntime, "InferenceSession", broken)
+    broken_matcher = SemanticMatcher()  # same files (already downloaded), but loading them fails
     assert broken_matcher.load() is False and broken_matcher.available is False
     assert "model files not found" in broken_matcher.error
     with pytest.raises(RuntimeError, match="Could not load model"):
         broken_matcher.similarities("jd", ["resume"])
+
+
+def test_onnx_embeddings_identical_to_sentence_transformers(matcher):
+    """The ONNX pipeline must reproduce the original sentence-transformers model exactly."""
+    sentence_transformers = pytest.importorskip("sentence_transformers")
+    reference = sentence_transformers.SentenceTransformer("all-MiniLM-L6-v2", device="cpu")
+    texts = [BACKEND_JD, "Pastry chef specialising in French desserts.", "Java Spring Boot microservices " * 20]
+    ours = matcher._encode(texts)
+    theirs = reference.encode(texts, normalize_embeddings=True)
+    assert np.abs(ours - theirs).max() < 1e-5
 
 
 def test_shared_instance_is_module_level_singleton():

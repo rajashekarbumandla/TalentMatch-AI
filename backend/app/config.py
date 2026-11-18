@@ -33,7 +33,14 @@ def _env_bool(name: str, default: bool) -> bool:
     return os.getenv(name, str(default)).strip().lower() in {"1", "true", "yes", "on"}
 
 
+# Vercel sets VERCEL=1 in its environment. Serverless functions start often ("cold starts"),
+# can only write to /tmp and run several instances at once, so some defaults differ there.
+ON_VERCEL = bool(os.getenv("VERCEL"))
+
+
 class Settings:
+    ON_VERCEL: bool = ON_VERCEL
+
     APP_NAME: str = "TalentMatch AI"
     APP_VERSION: str = "0.1.0"
 
@@ -42,6 +49,12 @@ class Settings:
     # postgresql+psycopg://postgres.<ref>:<password>@aws-0-<region>.pooler.supabase.com:5432/postgres
     # Never commit the real value; it lives only in backend/.env.
     DATABASE_URL: str = os.getenv("DATABASE_URL", "").strip()
+    # Connections kept open per server instance (serverless runs many small instances).
+    DB_POOL_SIZE: int = _env_int("DB_POOL_SIZE", 2 if ON_VERCEL else 5)
+    DB_MAX_OVERFLOW: int = _env_int("DB_MAX_OVERFLOW", 3 if ON_VERCEL else 5)
+    # Create missing tables / run migrations when the API starts. Off on Vercel, where the
+    # tables already exist (run `python -m app.create_tables` once instead).
+    RUN_DB_INIT_ON_STARTUP: bool = _env_bool("RUN_DB_INIT_ON_STARTUP", not ON_VERCEL)
 
     # --- Authentication ------------------------------------------------------
     # Secret used to sign login tokens. Must be long and random, and kept private.
@@ -51,15 +64,22 @@ class Settings:
     MIN_PASSWORD_LENGTH: int = _env_int("MIN_PASSWORD_LENGTH", 8)
 
     # --- Upload limits -----------------------------------------------------
-    MAX_FILE_SIZE_MB: float = _env_float("MAX_FILE_SIZE_MB", 5)
+    # Vercel rejects request bodies over 4.5 MB, so a single file must stay below that there.
+    MAX_FILE_SIZE_MB: float = _env_float("MAX_FILE_SIZE_MB", 4 if ON_VERCEL else 5)
     MAX_FILES_PER_BATCH: int = _env_int("MAX_FILES_PER_BATCH", 50)
     ALLOWED_EXTENSIONS: tuple = (".pdf", ".docx")
 
     # --- NLP model ---------------------------------------------------------
     MODEL_NAME: str = os.getenv("MODEL_NAME", "all-MiniLM-L6-v2")
+    MODEL_REVISION: str = os.getenv("MODEL_REVISION", "main")  # Hugging Face branch/commit of the model files
+    # Where the ONNX model files are stored. Serverless hosts (Vercel) only allow writing to /tmp.
+    MODEL_CACHE_DIR: str = os.getenv(
+        "MODEL_CACHE_DIR", "/tmp/talentmatch-models" if ON_VERCEL else str(Path.home() / ".cache" / "talentmatch-models")
+    )
     SPACY_MODEL: str = os.getenv("SPACY_MODEL", "en_core_web_sm")
-    # Set to false only for quick API experiments: semantic scores become unavailable.
-    LOAD_MODEL_ON_STARTUP: bool = _env_bool("LOAD_MODEL_ON_STARTUP", True)
+    # true: load the AI models when the server starts, so no request waits for them.
+    # false (default on Vercel): load on first use, so cold starts for login/dashboard stay fast.
+    LOAD_MODEL_ON_STARTUP: bool = _env_bool("LOAD_MODEL_ON_STARTUP", not ON_VERCEL)
 
     # --- OCR (optional) ----------------------------------------------------
     OCR_ENABLED: bool = _env_bool("OCR_ENABLED", True)
@@ -86,10 +106,13 @@ class Settings:
 
     # --- API ---------------------------------------------------------------
     CORS_ORIGINS: list[str] = [
-        o.strip()
+        o.strip().rstrip("/")
         for o in os.getenv("CORS_ORIGINS", "http://localhost:5173,http://127.0.0.1:5173").split(",")
         if o.strip()
     ]
+    # Optional regular expression for extra allowed origins, e.g. Vercel preview deployments:
+    # ^https://talentmatch-[a-z0-9-]+\.vercel\.app$
+    CORS_ORIGIN_REGEX: str | None = os.getenv("CORS_ORIGIN_REGEX") or None
 
     @property
     def max_file_size_bytes(self) -> int:

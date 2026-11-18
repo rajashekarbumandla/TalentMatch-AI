@@ -67,8 +67,8 @@ def _build_engine() -> tuple[Engine | None, str | None]:
     new_engine = create_engine(
         url,
         pool_pre_ping=True,   # test each pooled connection before use (Supabase closes idle ones)
-        pool_size=5,          # the free Supabase pooler allows only a limited number of clients
-        max_overflow=5,
+        pool_size=settings.DB_POOL_SIZE,  # the free Supabase pooler allows only a limited number of clients
+        max_overflow=settings.DB_MAX_OVERFLOW,
         pool_recycle=1800,    # replace connections older than 30 minutes
         connect_args={"connect_timeout": 10},
     )

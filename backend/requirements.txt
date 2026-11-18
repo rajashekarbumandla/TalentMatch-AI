@@ -1,16 +1,14 @@
-# TalentMatch AI - backend dependencies (Python 3.14)
-# Install:  pip install -r requirements.txt
+# TalentMatch AI - backend runtime dependencies
+# Install:  pip install -r requirements.txt          (add requirements-dev.txt for tests)
 #
-# Versions are pinned to a set verified to work together. On Windows 11 with
-# Smart App Control enabled, some newer compiled wheels are blocked; the pins for
-# psycopg, spacy and srsly below are builds that load correctly (see README).
-
-# CPU-only PyTorch (much smaller than the default CUDA build; no GPU is needed).
---extra-index-url https://download.pytorch.org/whl/cpu
+# Kept small enough for serverless hosting (Vercel's 500 MB function limit): the
+# all-MiniLM-L6-v2 model runs on ONNX Runtime instead of PyTorch, with identical results.
+# On Windows 11 with Smart App Control, some newer compiled wheels are blocked; the pins
+# for psycopg, spacy and srsly below are builds that load correctly (see README).
 
 # --- Web API -----------------------------------------------------------------
 fastapi==0.163.1
-uvicorn[standard]==0.54.0
+uvicorn==0.54.0                 # local server (Vercel runs the app itself)
 pydantic==2.14.3
 python-multipart==0.0.34        # required by FastAPI for file uploads
 python-dotenv==1.2.4            # loads backend/.env
@@ -21,18 +19,16 @@ SQLAlchemy==2.0.44
 psycopg[binary]==3.3.5
 
 # --- Resume parsing ----------------------------------------------------------
-pymupdf==2.1                    # PDF text extraction
+# PDF text extraction. On Linux servers 1.28.2 is used: same API, but without PyMuPDF 2.x's
+# unused layout-AI add-on (~200 MB with its dependencies). 2.1 is the build Smart App Control allows on Windows.
+pymupdf==2.1 ; sys_platform == "win32"
+pymupdf==1.28.2 ; sys_platform != "win32"
 python-docx==1.2.0              # DOCX text extraction
 
 # --- AI / NLP ----------------------------------------------------------------
-torch==2.15.0
-sentence-transformers==6.3.0    # all-MiniLM-L6-v2 embeddings
-scikit-learn==1.7.2             # cosine_similarity
-numpy==2.3.4
+onnxruntime==1.32.0             # runs the all-MiniLM-L6-v2 sentence-transformer model
+tokenizers==0.23.3              # the model's WordPiece tokenizer
+numpy==2.3.4                    # mean pooling, normalisation, cosine similarity
 spacy==3.8.13
 srsly==2.5.4
 en_core_web_sm @ https://github.com/explosion/spacy-models/releases/download/en_core_web_sm-3.8.0/en_core_web_sm-3.8.0-py3-none-any.whl
-
-# --- Testing -----------------------------------------------------------------
-pytest==9.2.0
-httpx==0.28.1                   # used by FastAPI's TestClient

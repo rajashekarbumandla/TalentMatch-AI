@@ -1,0 +1,11 @@
+# Development and test dependencies (not needed on the server).
+#   pip install -r requirements.txt -r requirements-dev.txt
+uvicorn[standard]==0.54.0       # --reload (file watching) for local development
+pytest==9.2.0
+httpx==0.28.1                   # used by FastAPI's TestClient
+psutil==7.2.2                   # memory measurements
+
+# Optional: lets tests/test_semantic_matcher.py prove the ONNX embeddings are identical
+# to the original sentence-transformers library (the test is skipped if it is missing).
+# --extra-index-url https://download.pytorch.org/whl/cpu
+# sentence-transformers==6.3.0

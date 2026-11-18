@@ -40,6 +40,10 @@ SCRYPT_N, SCRYPT_R, SCRYPT_P, KEY_LENGTH = 2**14, 8, 1, 64
 ALGORITHM = "HS256"
 
 if not settings.JWT_SECRET_KEY:
+    if settings.ON_VERCEL:
+        # Serverless runs several instances; each would invent a different key and reject the
+        # others' login tokens at random. Fail loudly instead of behaving unpredictably.
+        raise RuntimeError("JWT_SECRET_KEY must be set in the Vercel project's Environment Variables.")
     settings.JWT_SECRET_KEY = secrets.token_urlsafe(48)
     logger.warning("JWT_SECRET_KEY is not set; using a temporary key. Everyone will be logged out when the API restarts.")
 

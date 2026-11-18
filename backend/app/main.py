@@ -21,7 +21,7 @@ from app.nlp.spacy_model import get_spacy_model
 from app.schemas import DatabaseStatus, HealthResponse, ModelStatus
 
 logging.basicConfig(level=logging.INFO, format="%(levelname)s:     %(name)s - %(message)s")
-for noisy in ("httpx", "httpx2", "huggingface_hub", "sentence_transformers"):
+for noisy in ("httpx", "httpx2"):
     logging.getLogger(noisy).setLevel(logging.WARNING)  # keep startup logs readable
 logger = logging.getLogger("talentmatch")
 
@@ -31,6 +31,8 @@ async def lifespan(_app: FastAPI):
     """Runs once when the server starts (before `yield`) and once when it stops."""
     if engine is None:
         logger.warning("Database disabled: %s", DB_CONFIG_ERROR)
+    elif not settings.RUN_DB_INIT_ON_STARTUP:
+        logger.info("Skipping table creation at startup (RUN_DB_INIT_ON_STARTUP=false).")
     else:
         try:
             tables = init_db()
@@ -59,6 +61,7 @@ app = FastAPI(
 app.add_middleware(
     CORSMiddleware,
     allow_origins=settings.CORS_ORIGINS,
+    allow_origin_regex=settings.CORS_ORIGIN_REGEX,
     allow_methods=["*"],
     allow_headers=["*"],
     expose_headers=["Content-Disposition"],  # lets the browser read the CSV file name

@@ -510,6 +510,47 @@ python -m app.manage create-user --email hr@company.com --name "Asha Rao" --pass
 - The token is kept in `localStorage`. React escapes all text so scripts can't be injected, but an
   httpOnly cookie would be stronger if the frontend and API are hosted under the same domain.
 
+## Deployment on Vercel (frontend + backend) with Supabase
+
+Both parts run on Vercel's free Hobby plan as **two Vercel projects** created from the same
+GitHub repository. The database stays on Supabase.
+
+**What makes the backend fit a serverless function:**
+- **The AI model runs on ONNX Runtime instead of PyTorch.** The embeddings are identical (a test
+  compares them with sentence-transformers) and the install is about 1 GB smaller.
+- **Linux uses PyMuPDF 1.28.2.** It has the same API and gives identical extracted text, without
+  PyMuPDF 2.x's unused layout add-on. The Linux install is about 495 MB, within Vercel's 500 MB
+  Python limit, and Vercel's Large Functions (up to 5 GB, automatic for new projects) give extra headroom.
+- **Defaults switch automatically when Vercel sets `VERCEL=1`:**
+  - no table creation at startup;
+  - models load on first use, downloaded to `/tmp`;
+  - a small database connection pool;
+  - a 4 MB maximum file size.
+- **Large batches are uploaded in groups of at most 3.5 MB**, because Vercel limits a request to 4.5 MB.
+- **Region `syd1`**, next to the Supabase database.
+
+**1. Backend project** (deploy this first):
+1. In Vercel, choose **Add New → Project**, import the GitHub repository, and set **Root Directory** = `backend`.
+2. Add these environment variables:
+   - `DATABASE_URL`: the same Supabase Session-pooler URL as in your local `backend/.env`.
+   - `JWT_SECRET_KEY`: a **new** random value. Generate one with `python -c "import secrets; print(secrets.token_urlsafe(64))"`.
+   - `CORS_ORIGINS`: the frontend URL from step 2. Use `https://example.com` for now and update it later.
+3. Deploy, then open `https://<backend>.vercel.app/api/health`. It should report the database as connected.
+
+Don't copy `LOAD_MODEL_ON_STARTUP` or `MAX_FILE_SIZE_MB` from your local `.env` into Vercel; the Vercel defaults are better.
+
+**2. Frontend project:**
+1. Import the same repository again as a new project, with **Root Directory** = `frontend` (Vercel detects Vite).
+2. Set `VITE_API_BASE_URL` to `https://<backend>.vercel.app`. Optionally set `VITE_DEMO_EMAIL` and `VITE_DEMO_PASSWORD`.
+3. Deploy. `frontend/vercel.json` sends every page route to `index.html`, so links such as `/rankings` work after a refresh.
+
+**3. Connect the two:** set the backend's `CORS_ORIGINS` to the frontend URL (e.g. `https://talentmatch-ai.vercel.app`) and redeploy the backend.
+
+**Behaviour to expect:**
+- After a quiet period, the first request starts a new instance, which takes a few seconds.
+- The first analysis after a cold start also downloads the model (~90 MB) into `/tmp` and loads spaCy.
+- Supabase's free plan pauses a project after about a week of inactivity; resume it from the Supabase dashboard.
+
 ## API reference
 
 Interactive documentation: **http://localhost:8000/docs** (Swagger UI). All errors return

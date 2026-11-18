@@ -62,12 +62,17 @@ test('complete recruiter workflow', async ({ page }, testInfo) => {
   })
 
   await test.step('4. Run the analysis', async () => {
-    const uploadResponse = page.waitForResponse((r) => r.url().includes('/api/resumes/upload'))
+    // Resumes are uploaded in groups (hosting request-size limits), so collect every upload response.
+    const uploads = []
+    page.on('response', async (response) => {
+      if (response.url().includes('/api/resumes/upload') && response.ok()) uploads.push(await response.json())
+    })
     await page.getByRole('button', { name: 'Analyse 12 resumes' }).click()
-    const upload = await (await uploadResponse).json()
-    created.candidateIds = upload.candidate_ids
-    expect(upload.parsed).toBe(12)
     await expect(page.getByText(/Top match: (Priya Nair|Arjun Mehta)/)).toBeVisible({ timeout: 180_000 })
+    expect(uploads.length).toBeGreaterThan(1) // really sent in more than one group
+    expect(uploads.reduce((sum, u) => sum + u.parsed, 0)).toBe(12)
+    created.candidateIds = uploads.flatMap((u) => u.candidate_ids)
+    await expect(page.getByText('12 read · 0 duplicates · 0 could not be read')).toBeVisible()
     await page.getByRole('button', { name: 'View candidate ranking' }).click()
   })
 
